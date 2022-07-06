@@ -1,0 +1,655 @@
+%-----------------------------------------------------------------------------------------------------------------------------------------------%
+%	The MIT License (MIT)
+%
+%	Copyright (c) 2019 Jan Küster
+%
+%	Permission is hereby granted, free of charge, to any person obtaining a copy
+%	of this software and associated documentation files (the "Software"), to deal
+%	in the Software without restriction, including without limitation the rights
+%	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+%	copies of the Software, and to permit persons to whom the Software is
+%	furnished to do so, subject to the following conditions:
+%	
+%	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+%	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+%	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+%	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+%	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+%	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+%	THE SOFTWARE.
+%	
+%
+%-----------------------------------------------------------------------------------------------------------------------------------------------%
+
+
+%============================================================================%
+%
+%	DOCUMENT DEFINITION
+%
+%============================================================================%
+
+%we use article class because we want to fully customize the page and don't use a cv template
+\documentclass[10pt,A4]{article}	
+
+
+%----------------------------------------------------------------------------------------
+%	ENCODING
+%----------------------------------------------------------------------------------------
+
+% we use utf8 since we want to build from any machine
+\usepackage[utf8]{inputenc}		
+
+%----------------------------------------------------------------------------------------
+%	LOGIC
+%----------------------------------------------------------------------------------------
+
+% provides \isempty test
+\usepackage{xstring, xifthen}
+
+%----------------------------------------------------------------------------------------
+%	FONT BASICS
+%----------------------------------------------------------------------------------------
+
+% some tex-live fonts - choose your own
+
+%\usepackage[defaultsans]{droidsans}
+%\usepackage[default]{comfortaa}
+%\usepackage{cmbright}
+\usepackage[default]{raleway}
+%\usepackage{fetamont}
+%\usepackage[default]{gillius}
+%\usepackage[light,math]{iwona}
+%\usepackage[thin]{roboto} 
+
+% set font default
+\renewcommand*\familydefault{\sfdefault} 	
+\usepackage[T1]{fontenc}
+
+% more font size definitions
+\usepackage{moresize}
+
+\usepackage{verbatim}
+
+%----------------------------------------------------------------------------------------
+%	FONT AWESOME ICONS
+%---------------------------------------------------------------------------------------- 
+
+% include the fontawesome icon set
+\usepackage{fontawesome}
+
+% use to vertically center content
+% credits to: http://tex.stackexchange.com/questions/7219/how-to-vertically-center-two-images-next-to-each-other
+\newcommand{\vcenteredinclude}[1]{\begingroup
+\setbox0=\hbox{\includegraphics{#1}}%
+\parbox{\wd0}{\box0}\endgroup}
+
+% use to vertically center content
+% credits to: http://tex.stackexchange.com/questions/7219/how-to-vertically-center-two-images-next-to-each-other
+\newcommand*{\vcenteredhbox}[1]{\begingroup
+\setbox0=\hbox{#1}\parbox{\wd0}{\box0}\endgroup}
+
+% icon shortcut
+\newcommand{\icon}[3] { 							
+	\makebox(#2, #2){\textcolor{maincol}{\csname fa#1\endcsname}}
+}	
+
+% icon with text shortcut
+\newcommand{\icontext}[4]{ 						
+	\vcenteredhbox{\icon{#1}{#2}{#3}}  \hspace{2pt}  \parbox{0.9\mpwidth}{\textcolor{#4}{#3}}
+}
+
+% icon with website url
+\newcommand{\iconhref}[5]{ 						
+    \vcenteredhbox{\icon{#1}{#2}{#5}}  \hspace{2pt} \href{#4}{\textcolor{#5}{#3}}
+}
+
+% icon with email link
+\newcommand{\iconemail}[5]{ 						
+    \vcenteredhbox{\icon{#1}{#2}{#5}}  \hspace{2pt} \href{mailto:#4}{\textcolor{#5}{#3}}
+}
+
+%----------------------------------------------------------------------------------------
+%	PAGE LAYOUT  DEFINITIONS
+%----------------------------------------------------------------------------------------
+
+% page outer frames (debug-only)
+% \usepackage{showframe}		
+
+% we use paracol to display breakable two columns
+\usepackage{paracol}
+
+% define page styles using geometry
+\usepackage[a4paper]{geometry}
+
+% remove all possible margins
+\geometry{top=1cm, bottom=1cm, left=1cm, right=1cm}
+
+\usepackage{fancyhdr}
+\pagestyle{empty}
+
+% space between header and content
+% \setlength{\headheight}{0pt}
+
+% indentation is zero
+\setlength{\parindent}{0mm}
+
+%----------------------------------------------------------------------------------------
+%	TABLE /ARRAY DEFINITIONS
+%---------------------------------------------------------------------------------------- 
+
+% extended aligning of tabular cells
+\usepackage{array}
+
+% custom column right-align with fixed width
+% use like p{size} but via x{size}
+\newcolumntype{x}[1]{%
+>{\raggedleft\hspace{0pt}}p{#1}}%
+
+
+%----------------------------------------------------------------------------------------
+%	GRAPHICS DEFINITIONS
+%---------------------------------------------------------------------------------------- 
+
+%for header image
+\usepackage{graphicx}
+
+% use this for floating figures
+% \usepackage{wrapfig}
+% \usepackage{float}
+% \floatstyle{boxed} 
+% \restylefloat{figure}
+
+%for drawing graphics		
+\usepackage{tikz}				
+\usetikzlibrary{shapes, backgrounds,mindmap, trees}
+
+%----------------------------------------------------------------------------------------
+%	Color DEFINITIONS
+%---------------------------------------------------------------------------------------- 
+\usepackage{transparent}
+\usepackage{color}
+
+% primary color
+\definecolor{maincol}{RGB}{ 225, 0, 0 }
+
+% accent color, secondary
+% \definecolor{accentcol}{RGB}{ 250, 150, 10 }
+
+% dark color
+\definecolor{darkcol}{RGB}{ 70, 70, 70 }
+
+% light color
+\definecolor{lightcol}{RGB}{245,245,245}
+
+
+% Package for links, must be the last package used
+\usepackage[hidelinks]{hyperref}
+
+% returns minipage width minus two times \fboxsep
+% to keep padding included in width calculations
+% can also be used for other boxes / environments
+\newcommand{\mpwidth}{\linewidth-\fboxsep-\fboxsep}
+	
+
+
+%============================================================================%
+%
+%	CV COMMANDS
+%
+%============================================================================%
+
+%----------------------------------------------------------------------------------------
+%	 CV LIST
+%----------------------------------------------------------------------------------------
+
+% renders a standard latex list but abstracts away the environment definition (begin/end)
+\newcommand{\cvlist}[1] {
+	\begin{itemize}{#1}\end{itemize}
+}
+
+%----------------------------------------------------------------------------------------
+%	 CV TEXT
+%----------------------------------------------------------------------------------------
+
+% base class to wrap any text based stuff here. Renders like a paragraph.
+% Allows complex commands to be passed, too.
+% param 1: *any
+\newcommand{\cvtext}[1] {
+	\begin{tabular*}{1\mpwidth}{p{0.98\mpwidth}}
+		\parbox{1\mpwidth}{#1}
+	\end{tabular*}
+}
+
+%----------------------------------------------------------------------------------------
+%	CV SECTION
+%----------------------------------------------------------------------------------------
+
+% Renders a a CV section headline with a nice underline in main color.
+% param 1: section title
+\newcommand{\cvsection}[1] {
+	\vspace{14pt}
+	\cvtext{
+		\textbf{\LARGE{\textcolor{darkcol}{\uppercase{#1}}}}\\[-4pt]
+		\textcolor{maincol}{ \rule{0.1\textwidth}{2pt} } \\
+	}
+}
+
+%----------------------------------------------------------------------------------------
+%	META SKILL
+%----------------------------------------------------------------------------------------
+
+% Renders a progress-bar to indicate a certain skill in percent.
+% param 1: name of the skill / tech / etc.
+% param 2: level (for example in years)
+% param 3: percent, values range from 0 to 1
+\newcommand{\cvskill}[3] {
+	\begin{tabular*}{1\mpwidth}{p{0.72\mpwidth}  r}
+ 		\textcolor{black}{\textbf{#1}} & \textcolor{maincol}{#2}\\
+	\end{tabular*}%
+	
+	\hspace{4pt}
+	\begin{tikzpicture}[scale=1,rounded corners=2pt,very thin]
+		\fill [lightcol] (0,0) rectangle (1\mpwidth, 0.15);
+		\fill [maincol] (0,0) rectangle (#3\mpwidth, 0.15);
+  	\end{tikzpicture}%
+}
+
+
+%----------------------------------------------------------------------------------------
+%	 CV EVENT
+%----------------------------------------------------------------------------------------
+
+% Renders a table and a paragraph (cvtext) wrapped in a parbox (to ensure minimum content
+% is glued together when a pagebreak appears).
+% Additional Information can be passed in text or list form (or other environments).
+% the work you did
+% param 1: time-frame i.e. Sep 14 - Jan 15 etc.
+% param 2:	 event name (job position etc.)
+% param 3: Customer, Employer, Industry
+% param 4: Short description
+% param 5: work done (optional)
+% param 6: technologies include (optional)
+% param 7: achievements (optional)
+\newcommand{\cvevent}[7] {
+	
+	% we wrap this part in a parbox, so title and description are not separated on a pagebreak
+	% if you need more control on page breaks, remove the parbox
+	\parbox{\mpwidth}{
+		\begin{tabular*}{1\mpwidth}{p{0.72\mpwidth}  r}
+	 		\textcolor{black}{\textbf{#2}} & \colorbox{maincol}{\makebox[0.25\mpwidth]{\textcolor{white}{#1}}} \\
+			\textcolor{maincol}{\textbf{#3}} & \\
+		\end{tabular*}\\[8pt]
+	
+		\ifthenelse{\isempty{#4}}{}{
+			\cvtext{#4}\\
+		}
+	}
+
+	\ifthenelse{\isempty{#5}}{}{
+		\vspace{9pt}
+		{#5}
+	}
+
+	\ifthenelse{\isempty{#6}}{}{
+		\vspace{9pt}
+		\cvtext{\textbf{Technologies include:}}\\
+		{#6}
+	}
+
+	\ifthenelse{\isempty{#7}}{}{
+		\vspace{9pt}
+		\cvtext{\textbf{Achievements include:}}\\
+		{#7}
+	}
+	\vspace{14pt}
+}
+
+%----------------------------------------------------------------------------------------
+%	 CV META EVENT
+%----------------------------------------------------------------------------------------
+
+% Renders a CV event on the sidebar
+% param 1: title
+% param 2: subtitle (optional)
+% param 3: customer, employer, etc,. (optional)
+% param 4: info text (optional)
+\newcommand{\cvmetaevent}[4] {
+	\textcolor{maincol} {\cvtext{\textbf{\begin{flushleft}#1\end{flushleft}}}}
+
+	\ifthenelse{\isempty{#2}}{}{
+	\textcolor{darkcol} {\cvtext{\textbf{#2}} }
+	}
+
+	\ifthenelse{\isempty{#3}}{}{
+		\cvtext{{ \textcolor{darkcol} {#3} }}\\
+	}
+
+	\cvtext{#4}\\[14pt]
+}
+
+%---------------------------------------------------------------------------------------
+%	QR CODE
+%----------------------------------------------------------------------------------------
+
+% Renders a qrcode image (centered, relative to the parentwidth)
+% param 1: percent width, from 0 to 1
+\newcommand{\cvqrcode}[1] {
+	\begin{center}
+		\includegraphics[width={#1}\mpwidth]{qrcode}
+	\end{center}
+}
+
+
+%============================================================================%
+%
+%
+%
+%	DOCUMENT CONTENT
+%
+%
+%
+%============================================================================%
+\begin{document}
+\columnratio{0.31}
+\setlength{\columnsep}{2.2em}
+\setlength{\columnseprule}{4pt}
+\colseprulecolor{lightcol}
+\begin{paracol}{2}
+\begin{leftcolumn}
+%---------------------------------------------------------------------------------------
+%	META IMAGE
+%----------------------------------------------------------------------------------------
+\includegraphics[width=\linewidth]{./sjabd.jpg}	%trimming relative to image size
+
+%---------------------------------------------------------------------------------------
+%	META SKILLS
+%----------------------------------------------------------------------------------------
+\cvsection{SKILLS}
+
+\cvskill{HTML/CSS} {7+ yrs} {0.9} \\[-2pt]
+
+\cvskill{Javascript/jQuery} {7+ yrs} {0.9} \\[-2pt]
+
+\cvskill{PHP/Laravel} {3+ yrs} {0.9} \\[-2pt]
+
+\cvskill{Node.js/Express} {3+ yrs} {0.8} \\[-2pt]
+
+\cvskill{React} {3+ yrs} {0.7} \\[-2pt]
+
+\cvskill{React Native} {2+ yrs} {0.8} \\[-2pt]
+
+%\cvskill{Flutter} {2+ yrs} {0.8} \\[-2pt]
+
+%\cvskill{Angular} {1+ yrs} {0.7} \\[-2pt]
+
+%\cvskill{Django} {2+ yrs} {0.7} \\[-2pt]
+
+\cvskill{GIT} {2+ yrs} {0.7} \\[-2pt]
+
+
+
+
+
+\vfill\null
+\cvsection{CONTACT}
+	
+
+\icontext{Whatsapp}{12}{+98 938 130 8994}{black}\\[6pt]
+\icontext{Envelope}{12}{mynameissajjad@gmail.com}{black}\\[6pt]
+\icontext{LinkedinSquare}{12}{linkedin.com/in/sajjad-abdollahi}{black}\\[6pt]
+\icontext{Github}{12}{github.com/sajjadabd}{black}\\[6pt]
+\icontext{Instagram}{12}{sajjad.abd\_\_}{black}\\[6pt]
+\icontext{Globe}{12}{sjabd.ir}{black}\\[6pt]
+
+\vfill\null
+%%%%%%%%%%%%\cvqrcode{0.7}
+
+%---------------------------------------------------------------------------------------
+%	EDUCATION
+%----------------------------------------------------------------------------------------
+\newpage
+\cvsection{EDUCATION}
+
+\cvmetaevent
+{2010 - 2013}
+{Software Engineering}
+{University Of Mazandaran}
+{
+
+}
+
+\cvmetaevent
+{2017 - 2020}
+{Software Engineering}
+{Azad University of Neka}
+{
+My main project was about \textcolor{maincol}{\textbf{watchman route problem}} that is about the smallest routing path a watchman should go to see all the space on the room -- available on my github  github.com/sajjadabd
+}
+
+\vfill\null
+%%%%%%%%%%%%\cvqrcode{0.7}
+
+%---------------------------------------------------------------------------------------
+%	CERTIFICATION
+%----------------------------------------------------------------------------------------
+\begin{comment}
+\cvsection{CERTIFICATIONS}
+
+\cvmetaevent
+{LPIC 1 - Linux administrator}
+{}
+{}
+{Certificate issued by the Linux Professional Institute to prove abilities in Linux administration}
+
+\cvmetaevent
+{IBM InfoSphere Advanced DataStage Essentials}
+{}
+{}
+{Intense course about the ETL technologies and the use of IBM DataStage.}
+\end{comment}
+
+
+%\vfill
+%%%%%%%%%%%%\cvqrcode{0.7}
+
+
+\mbox{} % hotfix to place qrcode on the bottom when there are not other elements
+%\vfill
+%%%%%%%%%%%%\cvqrcode{0.7}
+
+\end{leftcolumn}
+\begin{rightcolumn}
+%---------------------------------------------------------------------------------------
+%	TITLE  HEADER
+%----------------------------------------------------------------------------------------
+\fcolorbox{white}{darkcol}{\begin{minipage}[c][3.5cm][c]{1\mpwidth}
+	\begin {center}
+		\HUGE{ \textbf{ \textcolor{white}{  Sajjad Abdollahi  } } } \\[-24pt]
+		\textcolor{white}{ \rule{0.1\textwidth}{1.25pt} } \\[4pt]
+		\large{ \textcolor{white} {Mobile App Developer - Full Stack Web Developer} }
+	\end {center}
+\end{minipage}} \\[14pt]
+\vspace{-30pt}
+
+%---------------------------------------------------------------------------------------
+%	PROFILE
+%----------------------------------------------------------------------------------------
+\vfill\null
+\cvsection{PROFILE}
+
+\cvtext{
+
+
+My name is \textcolor{maincol}{\textbf{Sajjad Abdollahi}} from Iran . \\
+
+for Introducing MySelf :
+
+\begin{itemize}
+	\item I Have More Than 10 Years of Experience in Software \& Web Developement
+	\item Good Knowlendge of Algorithms and Data Structures
+	\item Created \textcolor{maincol}{\textbf{Mobile App}} for  Selling Questions
+	\item Created Online Cosmetics Retail Shop named \textcolor{maincol}{\textbf{Neka Beauty}}
+	\item Created Online Chat Messaging App named \textcolor{maincol}{\textbf{Chatbox}}
+	\item Created Online Chess Game named \textcolor{maincol}{\textbf{ChessPlus}}
+	\item Created Card Game Web App named 
+	\textcolor{maincol}{\textbf{Hokm Card Game}}
+\end{itemize}
+
+
+}
+
+%---------------------------------------------------------------------------------------
+%	WORK EXPERIENCE
+%----------------------------------------------------------------------------------------
+\vfill\null
+\cvsection{WORK EXPERIENCE}
+
+\cvevent
+	{2021 - NOW}
+	{Creator of Question Selling App}
+	{Creating and Developement}
+	{Question Selling App is written in React Native with Page Navigation for Profile and Bookmarks with lots of theming , Main purpose of the app is for selling questions of seasons and branches }
+	{\cvlist{
+		\item Creation of Mobile app with React Native
+		\item Platform for users to Buy and Read Questions
+	}}
+	{\cvlist {
+		\item React Navigation for Transfer between pages
+		\item Style components for theming
+		\item Redux for theming and storing global variables
+		\item Axios for sending AJAX requests
+		\item Clean Code written
+	}}
+	{\cvlist{
+		\item In App Billing for Buying Questions
+		\item Theming the Software for beautiful Colors
+		\item Ability to save questions and branches
+		\item SMS sending for user authentication
+	}}
+
+\vfill\null
+\newpage
+
+
+\cvevent
+	{2021 - NOW}
+	{Backend of Question Selling App}
+	{Creating and Developement}
+	{Server is for my Question Selling App written in Node.js with Express Framework Responding JSON to App Requests and control the user to response saved bookmarks and buying stuff}
+	{\cvlist{
+		\item API for serving requests and admin panel for control
+	}}
+	{\cvlist {
+		\item Node.js with Express Framework
+		\item Sequelize for database CRUD
+		\item Restful Interface with JSON responses
+		\item EJS for Templating Admin panel
+		\item Passport for admin authentication
+		\item Git for configuration and documentation versioning
+		\item Clean Code written 
+	}}
+	{\cvlist{
+		\item Latex to Json Converter
+		\item Add thousand Items in Database with json file uploading
+	}}
+	
+
+
+%\vfill\null
+%\cvsection{WORK EXPERIENCE}
+
+\cvevent
+	{2019 - NOW}
+	{Founder/Creator of nekabeauty.com}
+	{Creating and Developement}
+	{nekabeauty is an online cosmetics retail shop written in PHP with self made framework with MySQL in back-end , works perfectly with AJAX requests and JSON }
+	{\cvlist{
+		\item Creation of online shop for buying cosmetics
+		\item Maintenance of existing infrastructure
+	}}
+	{\cvlist {
+		\item self made PHP framework (backend is a REST interface)
+		\item jQuery with AJAX and JSON for the easy frontend interaction
+		\item HTML5/CSS3 for the frontend
+	}}
+	{\cvlist{
+		\item ability for users to sign up with their phone number
+		\item Custom Made CMS for Managing The Shop
+		\item load products on scroll
+		\item ability to save products
+	}}
+
+\vfill\null
+\newpage
+
+\vfill\null
+\cvevent
+	{2020 - NOW}
+	{Creator of ChessPlus}
+	{Creating and Development}
+	{ChessPlus is an online Chess Game Written in Node.Js with Express Framework react as fast as possible to the changes in the game }
+	{\cvlist{
+		\item good platform for chess players to play online with super fast speed
+	}}
+	{\cvlist {
+		\item Node.js for back-end development
+		\item Socket.io for transferring messages
+		\item Flexbox and CSS Grid front-end Design
+		\item Git for configuration and documentation versioning
+	}}
+	{\cvlist{
+		\item suggestion of chess pieces to go in the board
+	}}
+
+
+
+\vfill\null
+\cvevent
+	{2020- NOW}
+	{Creator of Chatbox}
+	{Creating and Developement}
+	{Chatbox is an online Messaging App Written in Node.Js with Express Framework works perfectly sending and recieving messages across the internet}
+	{\cvlist{
+		\item providing messaging system for a large infrastructure
+	}}
+	{\cvlist {
+		\item Node.js for back-end development
+		\item Socket.io for transferring messages
+		\item Flexbox and CSS Grid for front-end Design
+	}}
+	{
+	\cvlist {
+		\item personal chats
+	}
+	}
+
+
+
+
+
+\vspace{1cm}
+
+
+
+%\vfill\null
+%\cvevent
+%	{2020 - NOW}
+%	{Creator of Hokm Card Game}
+%	{Creating and Developement}%	{Hokm is an online iranian card game written in Modern Javascript using Latest CSS Technologies and present good experience to the user for playing a card game }
+%	{}
+%	{}
+%	{}
+
+
+%\vfill\null
+% hotfixes to create fake-space to ensure the whole height is used
+%\mbox{}
+%\vfill
+%\mbox{}
+%\vfill
+%\mbox{}
+%\vfill
+%\mbox{}
+\end{rightcolumn}
+\end{paracol}
+\end{document}
