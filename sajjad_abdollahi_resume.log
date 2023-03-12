@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2023.3.11)  12 MAR 2023 10:32
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2023.3.11)  12 MAR 2023 10:39
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1326,42 +1326,42 @@ ness \T1/Raleway-TLF/m/n/10 and cut database ex-pen-di-tures by 20%
 [1
 
 {c:/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map} <./sjabd.jpg>]
-Overfull \hbox (13.44533pt too wide) in alignment at lines 581--581
+Overfull \hbox (13.44533pt too wide) in alignment at lines 587--587
 [][] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 581--581
+Underfull \hbox (badness 10000) in paragraph at lines 587--587
 
  []
 
 
-Overfull \hbox (4.96175pt too wide) in alignment at lines 581--581
+Overfull \hbox (4.96175pt too wide) in alignment at lines 587--587
 [] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 581--581
+Underfull \hbox (badness 10000) in paragraph at lines 587--587
 
  []
 
 
-Overfull \hbox (4.84172pt too wide) in alignment at lines 581--581
+Overfull \hbox (4.84172pt too wide) in alignment at lines 587--587
 [] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 581--581
+Underfull \hbox (badness 10000) in paragraph at lines 587--587
 
  []
 
 
-Overfull \hbox (4.84172pt too wide) in alignment at lines 581--581
+Overfull \hbox (4.84172pt too wide) in alignment at lines 587--587
 [] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 581--581
+Underfull \hbox (badness 10000) in paragraph at lines 587--587
 
  []
 
@@ -1373,7 +1373,7 @@ Package rerunfilecheck Info: File `sajjad_abdollahi_resume.out' has not changed
 Here is how much of TeX's memory you used:
  25498 strings out of 478268
  497942 string characters out of 5850345
- 828745 words of memory out of 5000000
+ 827745 words of memory out of 5000000
  43256 multiletter control sequences out of 15000+600000
  552635 words of font info for 44 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -1385,7 +1385,7 @@ mf-dist/fonts/enc/dvips/raleway/a_bzmckq.enc}<c:/texlive/2022/texmf-dist/fonts/
 type1/public/fontawesome/FontAwesome.pfb><c:/texlive/2022/texmf-dist/fonts/type
 1/impallari/raleway/Raleway-Bold.pfb><c:/texlive/2022/texmf-dist/fonts/type1/im
 pallari/raleway/Raleway-Regular.pfb>
-Output written on sajjad_abdollahi_resume.pdf (2 pages, 277707 bytes).
+Output written on sajjad_abdollahi_resume.pdf (2 pages, 277703 bytes).
 PDF statistics:
  46 PDF objects out of 1000 (max. 8388607)
  32 compressed objects within 1 object stream
